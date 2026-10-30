@@ -15,8 +15,17 @@ function App() {
   );
 
   return (
-    <div>
-      <h1>PULSE Artist Explorer</h1>
+    <div className="pulse-app">
+      <header className="pulse-header">
+        <h1 className="sr-only">PULSE</h1>
+        <img
+          src="/pulse-logo-transparent.png"
+          alt="PULSE — Bring Music To Your Life"
+          className="pulse-logo"
+        />
+
+        <h2>Artist Explorer</h2>
+      </header>
       <p>
         Music fans need a simple way to discover artists because finding
         reliable band information can be frustrating. My page will let users

@@ -1,4 +1,6 @@
+
 import { useState } from "react";
+
 const audioFiles = {
   "Led Zeppelin": "led-zeppelin.mp3",
   "Pearl Jam": "pearl-jam.mp3",
@@ -7,25 +9,32 @@ const audioFiles = {
 
 function ArtistCard({ artist }) {
   const [showDetails, setShowDetails] = useState(false);
-
-  const toggleDetails = (event) => {
-    const audio = event.currentTarget.closest("article").querySelector("audio");
-
-    if (showDetails) {
-      audio?.pause();
-      if (audio) audio.currentTime = 0;
-    }
-
-    setShowDetails(!showDetails);
-  };
-
   const audioFile = audioFiles[artist.artist_name];
 
+  const toggleDetails = () => {
+    setShowDetails((previous) => !previous);
+  };
+
+  const handleKeyDown = (event) => {
+    if (
+      event.target === event.currentTarget &&
+      (event.key === "Enter" || event.key === " ")
+    ) {
+      event.preventDefault();
+      toggleDetails();
+    }
+  };
+
   return (
-    <article>
-      <h2>
-        <button onClick={toggleDetails}>{artist.artist_name}</button>
-      </h2>
+    <article
+      onClick={toggleDetails}
+      onKeyDown={handleKeyDown}
+      role="button"
+      tabIndex={0}
+      aria-expanded={showDetails}
+      aria-label={`${artist.artist_name} details`}
+    >
+      <h2>{artist.artist_name}</h2>
       <p>{artist.genre}</p>
 
       {showDetails && (
@@ -44,14 +53,27 @@ function ArtistCard({ artist }) {
               href={artist.official_url}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={(event) => event.stopPropagation()}
+              onKeyDown={(event) => event.stopPropagation()}
             >
               Visit Official Website
             </a>
           </p>
-          <audio controls autoPlay>
-            <source src={`/audio/${audioFile}`} type="audio/mpeg" />
-            Your browser does not support audio.
-          </audio>
+
+          {audioFile && (
+            <audio
+              controls
+              autoPlay
+              onClick={(event) => event.stopPropagation()}
+              onKeyDown={(event) => event.stopPropagation()}
+            >
+              <source
+                src={`/audio/${audioFile}`}
+                type="audio/mpeg"
+              />
+              Your browser does not support audio.
+            </audio>
+          )}
         </div>
       )}
     </article>
