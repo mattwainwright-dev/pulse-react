@@ -14,9 +14,24 @@ function ArtistCard({ artist }) {
 
       {showDetails && (
         <div>
-          <p><strong>Origin:</strong> {artist.origin}</p>
-          <p><strong>Formed:</strong> {artist.formed_year}</p>
-          <p><strong>Bio:</strong> {artist.bio}</p>
+          <p>
+            <strong>Origin:</strong> {artist.origin}
+          </p>
+          <p>
+            <strong>Formed:</strong> {artist.formed_year}
+          </p>
+          <p>
+            <strong>Bio:</strong> {artist.bio}
+          </p>
+          <p>
+            <a
+              href={artist.official_url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Visit Official Website
+            </a>
+          </p>
         </div>
       )}
     </article>
