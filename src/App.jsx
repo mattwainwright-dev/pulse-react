@@ -1,7 +1,9 @@
+import { useState } from "react";
 import useFetchData from "./useFetchData.js";
 import ArtistCard from "./ArtistCard.jsx";
 
 function App() {
+  const [search, setSearch] = useState("");
   const { records, loading, error } = useFetchData(
     "https://student-data-api.mwwainwright1014-9d9.workers.dev/api/v1/datasets/pulse-artists/records?limit=20",
   );
@@ -10,8 +12,11 @@ function App() {
     return <h1>loading</h1>;
   }
 
-  const selectedArtists = records.filter((artist) =>
-    ["Led Zeppelin", "Pearl Jam", "Boyz II Men"].includes(artist.artist_name),
+  const selectedArtists = records.filter(
+    (artist) =>
+      ["Led Zeppelin", "Pearl Jam", "Boyz II Men"].includes(
+        artist.artist_name,
+      ) && artist.artist_name.toLowerCase().includes(search.toLowerCase()),
   );
 
   return (
@@ -31,6 +36,19 @@ function App() {
         reliable band information can be frustrating. My page will let users
         browse artists and explore their details.
       </p>
+
+      <input
+        type="search"
+        placeholder="Search artists..."
+        aria-label="Search artists"
+        value={search}
+        onChange={(event) => setSearch(event.target.value)}
+      />
+
+      {selectedArtists.length === 0 && (
+        <p role="status">No artists found. Try another search.</p>
+      )}
+
       {selectedArtists.map((artist) => (
         <ArtistCard key={artist.id} artist={artist} />
       ))}
